@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import fetch, { RequestInit } from "node-fetch";
+import fetch from "node-fetch";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -14,11 +14,20 @@ const proxyAgent = process.env.HTTP_PROXY
   ? new HttpsProxyAgent(process.env.HTTP_PROXY)
   : undefined;
 
+function customFetch(
+  input: string | URL | Request,
+  init?: RequestInit
+): Promise<Response> {
+  const url = typeof input === "string" ? input : input instanceof URL ? input.href : (input as unknown as Request).url;
+  // node-fetch RequestInit differs from global; proxy agent is Node-only
+  return fetch(url, { ...init, agent: proxyAgent } as Parameters<typeof fetch>[1]) as unknown as Promise<Response>;
+}
+
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   timeout: 120000,
-  fetch: (url: string, init?: RequestInit) =>
-    fetch(url, { ...init, agent: proxyAgent }),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fetch: customFetch as any,
 });
 
 export async function POST(req: Request) {
