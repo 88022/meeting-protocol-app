@@ -15,21 +15,24 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await res.json();
-    setLoading(false);
-
-    if (!res.ok) {
-      setError(data.error ?? "Ошибка входа");
-      return;
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error ?? "Ошибка входа");
+        return;
+      }
+      router.push("/upload");
+    } catch (err) {
+      setError("Не удалось войти. Проверьте интернет или попробуйте позже.");
+    } finally {
+      setLoading(false);
     }
-
-    router.push("/upload");
   }
 
   return (

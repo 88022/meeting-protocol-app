@@ -16,27 +16,30 @@ export default function RegisterPage() {
     setError(null);
     setSuccess(null);
 
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firstName, lastName, email }),
-    });
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email }),
+      });
 
-    const data = await res.json();
-    setLoading(false);
-
-    if (!res.ok) {
-      setError(data.error ?? "Ошибка регистрации");
-      return;
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error ?? "Ошибка регистрации");
+        return;
+      }
+      setSuccess(
+        data.message ??
+          "Запрос на доступ отправлен. Мы свяжемся с вами по электронной почте."
+      );
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+    } catch (err) {
+      setError("Не удалось отправить запрос. Проверьте интернет или попробуйте позже.");
+    } finally {
+      setLoading(false);
     }
-
-    setSuccess(
-      data.message ??
-        "Запрос на доступ отправлен. Мы свяжемся с вами по электронной почте."
-    );
-    setFirstName("");
-    setLastName("");
-    setEmail("");
   }
 
   return (
