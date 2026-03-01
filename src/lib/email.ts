@@ -19,7 +19,9 @@ export async function sendSetPasswordEmail(
   setPasswordLink: string
 ): Promise<{ ok: boolean; error?: string }> {
   if (!process.env.SMTP_HOST || !process.env.EMAIL_FROM) {
-    return { ok: false, error: "SMTP not configured" };
+    const msg = "SMTP not configured (нужны SMTP_HOST и EMAIL_FROM в .env)";
+    console.error("[Email]", msg);
+    return { ok: false, error: msg };
   }
 
   try {
@@ -36,9 +38,11 @@ export async function sendSetPasswordEmail(
         <p>После установки пароля вы сможете войти на сайт.</p>
       `.trim(),
     });
+    console.log("[Email] Письмо отправлено на", to);
     return { ok: true };
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
+    console.error("[Email] Ошибка отправки на", to, ":", message);
     return { ok: false, error: message };
   }
 }
