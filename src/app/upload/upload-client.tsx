@@ -47,7 +47,7 @@ export default function UploadClient() {
 
   return (
     <div className="max-w-xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4">Создание протокола</h1>
+      <h1 className="text-2xl font-bold mb-4 text-black">Создание протокола</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
           <p className="text-sm text-gray-700">
