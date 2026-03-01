@@ -105,7 +105,7 @@ export default function UploadClient() {
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
           </button>
-          <pre className="whitespace-pre-wrap border p-4 rounded bg-white text-sm">
+          <pre className="whitespace-pre-wrap border border-black p-4 rounded bg-white text-sm text-black">
             {result}
           </pre>
         </div>
