@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  sendRequestReceivedEmail,
+  sendNewRequestNotificationToAdmins,
+} from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -48,6 +52,19 @@ export async function POST(req: Request) {
         status: "PENDING",
       },
     });
+
+    // Письмо заявителю и уведомление админам (не блокируем ответ при ошибке почты)
+    const applicantName = `${user.firstName} ${user.lastName}`.trim();
+    sendRequestReceivedEmail(user.email, user.firstName).catch(() => {});
+    const admins = await prisma.user.findMany({
+      where: { isAdmin: true },
+      select: { email: true },
+    });
+    sendNewRequestNotificationToAdmins(
+      admins.map((a) => a.email),
+      user.email,
+      applicantName
+    ).catch(() => {});
 
     return NextResponse.json({
       success: true,

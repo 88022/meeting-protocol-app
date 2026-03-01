@@ -46,3 +46,66 @@ export async function sendSetPasswordEmail(
     return { ok: false, error: message };
   }
 }
+
+/** Письмо заявителю: заявка принята. */
+export async function sendRequestReceivedEmail(
+  to: string,
+  firstName: string
+): Promise<{ ok: boolean; error?: string }> {
+  if (!process.env.SMTP_HOST || !process.env.EMAIL_FROM) {
+    const msg = "SMTP not configured (нужны SMTP_HOST и EMAIL_FROM в .env)";
+    console.error("[Email]", msg);
+    return { ok: false, error: msg };
+  }
+
+  const baseUrl = process.env.APP_BASE_URL ?? "https://pmassist.ru";
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to,
+      subject: "Заявка на доступ к PM Assist принята",
+      text: `Здравствуйте, ${firstName}!\n\nВаша заявка на доступ к сервису PM Assist принята и будет рассмотрена. Мы свяжемся с вами по этой почте после решения.\n\nС уважением,\nКоманда PM Assist\n${baseUrl}`,
+      html: `
+        <p>Здравствуйте, ${firstName}!</p>
+        <p>Ваша заявка на доступ к сервису PM Assist принята и будет рассмотрена.</p>
+        <p>Мы свяжемся с вами по этой почте после решения.</p>
+        <p>С уважением,<br/>Команда PM Assist<br/><a href="${baseUrl}">${baseUrl}</a></p>
+      `.trim(),
+    });
+    console.log("[Email] Подтверждение заявки отправлено на", to);
+    return { ok: true };
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error("[Email] Ошибка отправки подтверждения на", to, ":", message);
+    return { ok: false, error: message };
+  }
+}
+
+/** Уведомление админам о новой заявке. */
+export async function sendNewRequestNotificationToAdmins(
+  adminEmails: string[],
+  applicantEmail: string,
+  applicantName: string
+): Promise<void> {
+  if (!process.env.SMTP_HOST || !process.env.EMAIL_FROM || adminEmails.length === 0) return;
+
+  const baseUrl = process.env.APP_BASE_URL ?? "https://pmassist.ru";
+  const text = `Новая заявка на доступ к PM Assist.\n\nЗаявитель: ${applicantName}\nEmail: ${applicantEmail}\n\nПроверить заявки: ${baseUrl}/admin/requests`;
+  const html = `<p>Новая заявка на доступ к PM Assist.</p><p><strong>Заявитель:</strong> ${applicantName}<br/><strong>Email:</strong> ${applicantEmail}</p><p><a href="${baseUrl}/admin/requests">Проверить заявки</a></p>`;
+
+  for (const to of adminEmails) {
+    try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_FROM,
+        to,
+        subject: "PM Assist: новая заявка на доступ",
+        text,
+        html,
+      });
+      console.log("[Email] Уведомление админу отправлено на", to);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      console.error("[Email] Ошибка уведомления админу", to, ":", message);
+    }
+  }
+}
