@@ -47,14 +47,14 @@ export default function UploadClient() {
 
   return (
     <div className="max-w-xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4 text-black">Создание протокола</h1>
+      <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Создание протокола</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-gray-700 dark:text-gray-300">
             Выберите файл транскрипта в формате{" "}
             <span className="font-semibold">.txt</span>
           </p>
-          <label className="inline-flex items-center justify-center px-4 py-2 bg-white border border-blue-600 rounded cursor-pointer hover:bg-blue-50 text-sm font-medium text-blue-700">
+          <label className="inline-flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-blue-600 dark:border-blue-500 rounded cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700 text-sm font-medium text-blue-700 dark:text-blue-300">
             Выбрать файл (.txt)
             <input
               type="file"
@@ -68,35 +68,35 @@ export default function UploadClient() {
             />
           </label>
           {fileName && (
-            <p className="text-xs text-gray-600">
+            <p className="text-xs text-gray-600 dark:text-gray-400">
               Выбран файл: <span className="font-medium">{fileName}</span>
             </p>
           )}
         </div>
-        <p className="text-sm text-gray-700">Нажми, чтобы получить протокол</p>
+        <p className="text-sm text-gray-700 dark:text-gray-300">Нажми, чтобы получить протокол</p>
         <button
           type="submit"
           disabled={!file || loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+          className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded disabled:opacity-50 hover:bg-blue-700 dark:hover:bg-blue-600"
         >
           {loading ? "Обработка..." : "Протокол"}
         </button>
       </form>
 
-      {error && <p className="mt-4 text-red-600">{error}</p>}
+      {error && <p className="mt-4 text-red-600 dark:text-red-400">{error}</p>}
 
       {result && (
         <div className="mt-6">
           <button
             type="button"
             onClick={handleCopy}
-            className="mb-2 inline-flex items-center justify-center w-8 h-8 border border-gray-300 rounded hover:bg-gray-50"
+            className="mb-2 inline-flex items-center justify-center w-8 h-8 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700"
             aria-label="Скопировать протокол"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              className="w-4 h-4 text-gray-600"
+              className="w-4 h-4 text-gray-600 dark:text-gray-400"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -105,7 +105,7 @@ export default function UploadClient() {
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
           </button>
-          <pre className="whitespace-pre-wrap border border-black p-4 rounded bg-white text-sm text-black">
+          <pre className="whitespace-pre-wrap border border-gray-300 dark:border-gray-600 p-4 rounded bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
             {result}
           </pre>
         </div>

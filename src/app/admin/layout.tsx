@@ -11,22 +11,22 @@ export default async function AdminLayout({
     redirect("/login");
   }
   return (
-    <div className="min-h-screen bg-white">
-      <header className="border-b px-4 py-3">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
+      <header className="border-b border-gray-200 dark:border-gray-700 px-4 py-3">
         <nav className="max-w-4xl mx-auto flex items-center justify-between">
-          <a href="/admin" className="font-semibold text-gray-900">
+          <a href="/admin" className="font-semibold text-gray-900 dark:text-gray-100">
             Админка
           </a>
           <div className="flex gap-4">
             <a
               href="/admin/users"
-              className="text-sm text-blue-600 hover:underline"
+              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
             >
               Пользователи
             </a>
             <a
               href="/admin/requests"
-              className="text-sm text-blue-600 hover:underline"
+              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
             >
               Заявки на доступ
             </a>

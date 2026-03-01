@@ -40,22 +40,22 @@ export default function AdminUsersPage() {
   }, []);
 
   if (loading) {
-    return <p className="text-gray-600">Загрузка пользователей...</p>;
+    return <p className="text-gray-600 dark:text-gray-400">Загрузка пользователей...</p>;
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Пользователи</h1>
-      <p className="text-sm text-gray-600">
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Пользователи</h1>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
         Все зарегистрированные пользователи (кто подал заявку на доступ).
       </p>
 
       {users.length === 0 ? (
-        <p className="text-gray-600">Пользователей пока нет.</p>
+        <p className="text-gray-600 dark:text-gray-400">Пользователей пока нет.</p>
       ) : (
-        <div className="overflow-x-auto rounded border border-gray-200">
+        <div className="overflow-x-auto rounded border border-gray-200 dark:border-gray-600">
           <table className="min-w-full text-left text-sm">
-            <thead className="border-b bg-gray-50 text-gray-700">
+            <thead className="border-b bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
               <tr>
                 <th className="px-4 py-3 font-medium">Имя</th>
                 <th className="px-4 py-3 font-medium">Email</th>
@@ -68,12 +68,12 @@ export default function AdminUsersPage() {
             </thead>
             <tbody>
               {users.map((u) => (
-                <tr key={u.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-900">
+                <tr key={u.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+                  <td className="px-4 py-3 font-medium text-gray-900 dark:text-gray-100">
                     {u.lastName} {u.firstName}
                   </td>
-                  <td className="px-4 py-3 text-gray-700">{u.email}</td>
-                  <td className="px-4 py-3 text-gray-700">
+                  <td className="px-4 py-3 text-gray-700 dark:text-gray-300">{u.email}</td>
+                  <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
                     {statusLabels[u.status] ?? u.status}
                   </td>
                   <td className="px-4 py-3">{u.isAdmin ? "Да" : "—"}</td>
@@ -84,14 +84,14 @@ export default function AdminUsersPage() {
                           type="text"
                           readOnly
                           value={u.setPasswordLink}
-                          className="min-w-[200px] max-w-[280px] rounded border border-gray-200 px-2 py-1 text-xs"
+                          className="min-w-[200px] max-w-[280px] rounded border border-gray-200 dark:border-gray-600 px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         />
                         <button
                           type="button"
                           onClick={() =>
                             navigator.clipboard.writeText(u.setPasswordLink!)
                           }
-                          className="rounded bg-blue-600 px-2 py-1 text-xs text-white hover:bg-blue-700"
+                          className="rounded bg-blue-600 dark:bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-700 dark:hover:bg-blue-600"
                         >
                           Копировать
                         </button>
@@ -100,10 +100,10 @@ export default function AdminUsersPage() {
                       <span className="text-gray-400">—</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
                     {new Date(u.createdAt).toLocaleString("ru")}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
                     {u.lastLoginAt
                       ? new Date(u.lastLoginAt).toLocaleString("ru")
                       : "—"}

@@ -37,37 +37,37 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-sm mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4">Вход</h1>
+      <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Вход</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Корпоративная почта"
-          className="w-full border rounded px-3 py-2 text-sm"
+          className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Пароль"
-          className="w-full border rounded px-3 py-2 text-sm"
+          className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
         />
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+          className="w-full px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded disabled:opacity-50 hover:bg-blue-700 dark:hover:bg-blue-600"
         >
           {loading ? "Входим..." : "Войти"}
         </button>
       </form>
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-      <div className="mt-6 text-sm text-gray-700">
+      {error && <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
+      <div className="mt-6 text-sm text-gray-700 dark:text-gray-300">
         Новый пользователь?{" "}
         <button
           type="button"
           onClick={() => router.push("/register")}
-          className="text-blue-600 underline"
+          className="text-blue-600 dark:text-blue-400 underline"
         >
           Регистрация
         </button>
