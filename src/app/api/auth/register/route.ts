@@ -54,7 +54,9 @@ export async function POST(req: Request) {
       message: "Запрос на доступ отправлен. Мы свяжемся с вами по почте.",
     });
   } catch (err) {
-    console.error("Register error:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : undefined;
+    console.error("Register error:", message, stack);
     return NextResponse.json(
       { error: "Ошибка сервера. Попробуйте позже." },
       { status: 500 }
