@@ -19,6 +19,7 @@ export async function GET() {
       isAdmin: true,
       createdAt: true,
       lastLoginAt: true,
+      _count: { select: { protocols: true } },
       passwordTokens: {
         where: {
           usedAt: null,
@@ -43,6 +44,7 @@ export async function GET() {
       isAdmin: u.isAdmin,
       createdAt: u.createdAt,
       lastLoginAt: u.lastLoginAt,
+      protocolCount: u._count.protocols,
       setPasswordLink: token
         ? `${baseUrl}/set-password?token=${token.token}`
         : null,

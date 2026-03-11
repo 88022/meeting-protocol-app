@@ -3,6 +3,7 @@ import OpenAI from "openai";
 import fetch from "node-fetch";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 console.log(
   "OPENAI_API_KEY starts with:",
@@ -111,6 +112,13 @@ export async function POST(req: Request) {
     });
 
     const protocolText = response.output_text ?? "";
+
+    await prisma.protocolLog.create({
+      data: {
+        userId: user.id,
+        originalFilename: file.name,
+      },
+    });
 
     return NextResponse.json({ protocol: protocolText });
   } catch (e) {
