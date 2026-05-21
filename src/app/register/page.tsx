@@ -1,17 +1,23 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!consent) {
+      setError("Необходимо согласие на обработку персональных данных.");
+      return;
+    }
     setLoading(true);
     setError(null);
     setSuccess(null);
@@ -35,7 +41,7 @@ export default function RegisterPage() {
       setFirstName("");
       setLastName("");
       setEmail("");
-    } catch (err) {
+    } catch {
       setError("Не удалось отправить запрос. Проверьте интернет или попробуйте позже.");
     } finally {
       setLoading(false);
@@ -67,9 +73,27 @@ export default function RegisterPage() {
           placeholder="Корпоративная почта (@targetai.ai)"
           className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
         />
+        <label className="flex items-start gap-2.5 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border-gray-300 text-blue-600 cursor-pointer"
+          />
+          <span className="text-xs text-gray-500 leading-relaxed">
+            Я соглашаюсь с{" "}
+            <Link
+              href="/privacy"
+              target="_blank"
+              className="text-blue-600 hover:underline"
+            >
+              политикой обработки персональных данных
+            </Link>
+          </span>
+        </label>
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !consent}
           className="w-full px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded disabled:opacity-50 hover:bg-blue-700 dark:hover:bg-blue-600"
         >
           {loading ? "Отправляем..." : "Отправить запрос"}
