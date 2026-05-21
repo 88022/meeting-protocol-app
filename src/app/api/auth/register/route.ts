@@ -19,13 +19,6 @@ export async function POST(req: Request) {
 
     const normalizedEmail = String(email).trim().toLowerCase();
 
-    if (!normalizedEmail.endsWith("@targetai.ai")) {
-      return NextResponse.json(
-        { error: "Используйте корпоративную почту в домене targetai.ai" },
-        { status: 400 }
-      );
-    }
-
     const existing = await prisma.user.findUnique({
       where: { email: normalizedEmail },
     });

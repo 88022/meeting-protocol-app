@@ -70,7 +70,7 @@ export default function RegisterPage() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Корпоративная почта (@targetai.ai)"
+          placeholder="Электронная почта"
           className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
         />
         <label className="flex items-start gap-2.5 cursor-pointer">
